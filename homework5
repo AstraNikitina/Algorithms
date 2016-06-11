@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <utility>
+int main() {
+    int first[1002][30], second[1002][30];
+    int nfirst, nsecond, lfirst, lsecond;
+    int begfirst, begsecond;
+    int kfirst, ksecond;
+    bool visited[1002][1002];
+    bool finfirst[1002], finsecond[1002];
+    std::cin >> nfirst >> lfirst;
+    for (int i = 0; i < nfirst; ++i) {
+        for (int j = 0; j < lfirst; ++j) {
+            std::cin >> first[i][j];
+        }
+        finfirst[i] = false;
+    }
+    std::cin >> begfirst;
+    std::cin >> kfirst;
+    for (int i = 0; i < kfirst; ++i) {
+        int art;
+        std::cin >> art;
+        finfirst[art] = true;
+    }
+    std::cin >> nsecond >> lsecond;
+    for (int i = 0; i < nsecond; ++i) {
+        for (int j = 0; j < lsecond; ++j) {
+            std::cin >> second[i][j];
+        }
+        finsecond[i] = false;
+    }
+    std::cin >> begsecond;
+    std::cin >> ksecond;
+    for (int i = 0; i < ksecond; ++i) {
+        int art;
+        std::cin >> art;
+        finsecond[art] = true;
+    }
+    bool result = true;
+    std::vector<std::pair<int, int>> line;
+    line.push_back(std::make_pair(begfirst, begsecond));
+    for (int i = 0; i < lfirst; ++i) {
+        for (int j = 0; j < lsecond; ++j) {
+            visited[i][j] = false;
+        }
+    }
+    visited[begfirst][begsecond] = true;
+    while (!line.empty()) {
+        int left, right;
+        left = line.back().first;
+        right = line.back().second;
+        line.pop_back();
+        if (finfirst[left] != finsecond[right]) {
+            result = false;
+            break;
+        }
+        for (int t = 0; t < lfirst; ++t) {
+            if (!visited[first[left][t]][second[right][t]]) {
+                line.push_back(std::make_pair(first[left][t], second[right][t]));
+                visited[first[left][t]][second[right][t]] = true;
+            }
+        }
+    }
+    std::cout << result;
+    return 0;
+}
